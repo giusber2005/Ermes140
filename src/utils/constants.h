@@ -1,9 +1,12 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-char* DATABASE_PATH = "database.db";
+//CONSTANT FOR THE DATABASE
+extern const char *DATABASE_PATH; // database name
 
 #define TABLE_CMD_MAX_LENGTH 1024
+#define USERS_COLUMNS_COUNT 3
+#define AUDIOS_COLUMNS_COUNT 4
 
 //strcture for a Map in c, (used in database table creation)
 typedef struct {
@@ -11,22 +14,26 @@ typedef struct {
     char *value; // column type and constraints
 } ColumnDef;
 
-ColumnDef user_columns[] = {
-    {"id", "INTEGER PRIMARY KEY AUTOINCREMENT"},
-    {"username", "TEXT UNIQUE NOT NULL"},
-    {"password", "TEXT NOT NULL"}
-};
-
-ColumnDef audios[] = {
-    {"id", "INTEGER PRIMARY KEY AUTOINCREMENT"},
-    {"filename", "TEXT NOT NULL"},
-    {"userid", "INTEGER NOT NULL"},
-    {"FOREIGN KEY(userid)", "REFERENCES users(id)"}
-};
+extern ColumnDef user_columns[]; // columns for the users table
+extern ColumnDef audios[]; // columns for the audios table
 
 
+//CONSTANTS FOR THE GRAPHICAL INTERFACE
 #define ENTER_KEY 10
 #define MAX_USERNAME 50
 #define MAX_PASSWORD 50
+
+//CONSTANTS FOR THE GRAPHICAL INTERFACE
+extern const char *start_menu[]; // start menu options
+#define START_MENU_OPTIONS 3
+extern const char *home_menu[]; // home menu options
+#define HOME_MENU_OPTIONS 7
+
+//CONSTANTS FOR THE UTILS AREA
+#define COMMON_PASSWORDS_FILE "./public/10k-most-common.txt"
+
+//CONSTANT FOR THE AUDIO REPRODUCTION
+#define AUDIOS_FOLDER_PATH "./audios/"
+#define FRAMES_PER_BUFFER 512 
 
 #endif

@@ -4,7 +4,7 @@ CFLAGS = -Wall -g -Wextra -I./src -I./src/utils -I./src/functionalities \
          -I./src/functionalities/reproduce -I./src/functionalities/identify \
          -I./src/functionalities/compress -I./src/functionalities/export \
          -I./src/functionalities/management -I./src/functionalities/database
-LDFLAGS = -lsqlite3 -lsndfile -lncurses
+LDFLAGS = -lsqlite3 -lsndfile -lncurses -lcrypto -lportaudio
 SRC_DIR = src
 OBJ_DIR = build
 BIN = ermes_app.exe

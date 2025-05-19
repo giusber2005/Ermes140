@@ -2,6 +2,10 @@
 #include "constants.h"
 #include "mainLibraries.h"
 
+//useful libraries for password hashing
+#include <openssl/evp.h>
+#include <openssl/sha.h>
+
 int password_strength(const char *password) {
     int length = strlen(password);
     int has_lower = 0, has_upper = 0, has_digit = 0, has_special = 0;
@@ -27,3 +31,75 @@ int password_strength(const char *password) {
     else return 3;                      // Very Strong
 }
 
+int generate_password_hash(const char *password, char *hashed_password) {
+    // Hash the password using SHA-256
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256((const unsigned char *)password, strlen(password), hash);
+
+    // Convert hash to hex string
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+        sprintf(hashed_password + (i * 2), "%02x", hash[i]);
+    }
+    hashed_password[SHA256_DIGEST_LENGTH * 2] = '\0';
+    return 0; // Success
+}
+
+int verify_password(const char *password, const char *hashed_password) {
+    char computed_hash[SHA256_DIGEST_LENGTH * 2 + 1];
+    generate_password_hash(password, computed_hash);
+    return strcmp(computed_hash, hashed_password) == 0;
+}
+
+int check_if_common(const char *password) {
+    int success = 0;
+    FILE *file = fopen(COMMON_PASSWORDS_FILE, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Error opening common passwords file.\n");
+        return -1; // Error
+    }
+
+    char line[256];
+    while (fgets(line, sizeof(line), file)) {
+        // Remove newline character
+        line[strcspn(line, "\n")] = 0;
+        if (strcmp(password, line) == 0) {
+            success = 1; // Password is common
+            break;
+        }
+    }
+
+    fclose(file);
+    return success;
+}
+
+//function for initializing portaudio
+int initialize_portaudio() {
+    PaError err = Pa_Initialize();
+    if (err != paNoError) {
+        fprintf(stderr, "PortAudio error: %s\n", Pa_GetErrorText(err));
+        return -1; // Error
+    }
+    return 0; // Success
+}
+
+//function for closing portaudio
+int close_portaudio() {
+    PaError err = Pa_Terminate();
+    if (err != paNoError) {
+        fprintf(stderr, "PortAudio error: %s\n", Pa_GetErrorText(err));
+        return -1; // Error
+    }
+    return 0; // Success
+}
+
+//create a directory if it doesn't exist
+int create_directory(const char *path) {
+    struct stat st;
+    if (stat(path, &st) == -1) {
+        if (mkdir(path, 0777) == -1) {
+            fprintf(stderr, "Error creating directory: %s\n", path);
+            return -1; // Error
+        }
+    }
+    return 0; // Success
+}

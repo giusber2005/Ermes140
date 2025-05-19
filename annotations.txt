@@ -60,6 +60,12 @@ PROJECT STRUCTURE
                 database.h   
     ./build
 
-WORK OF TODAY
-    Setup authentication, bone graphical structure, database management, reproducing of the audio
+THINGS TO DO 
+    Add logo to the graphic and display ermes140 with figlet
+    Create artistic borders outside the graphics
+    Add also colors (purple, green theme) and update graphics 
+    Dynamic password strenght checking
+    Start Reproduction and Recording of audios
+
 TEMPORARY NOTES
+    export AUDIODEV = null

@@ -1,7 +1,4 @@
-#include "../../utils/constants.h"
-#include "../../utils/mainLibraries.h"
-#include "../../utils/utils.h"
-
+#include "database.h"
 
 //function for opening the database
 bool database_init(sqlite3 **db) {

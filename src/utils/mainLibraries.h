@@ -12,5 +12,12 @@
 //useful libraries for this project in particular
 #include <ncurses.h>
 #include <sqlite3.h>
+#include <portaudio.h>
+#include <sndfile.h>
+
+//libraries for working with files directories
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #endif
