@@ -1,7 +1,7 @@
 #include "ErmesGraphical.h"
 
 // Helper function for a dynamic menu
-int menu_select(const char *title, const char *options[], int n_options) {
+int menu_select(const char *title, char *options[], int n_options) {
     int highlight = 0;
     int choice = -1;
     int c;
@@ -10,7 +10,7 @@ int menu_select(const char *title, const char *options[], int n_options) {
         mvprintw(2, 5, "%s", title);
         for (int i = 0; i < n_options; i++) {
             if (i == highlight) attron(A_REVERSE);
-            mvprintw(4 + i, 7, "%s", options[i]);
+            mvprintw(4 + i, 7, "%s %s", "->", options[i]);
             if (i == highlight) attroff(A_REVERSE);
         }
         refresh();
@@ -77,6 +77,13 @@ void login_screen(sqlite3* db) {
         getnstr(password, MAX_PASSWORD - 1);
 
         if (user_authentication(db, username, password)) {
+            current_user = malloc(strlen(username) + 1);
+            if (current_user == NULL) {
+                fprintf(stderr, "Memory allocation failed\n");
+                return;
+            }
+            strcpy(current_user, username);
+
             authenticated = 1;
         } else {
             mvprintw(7, 5, "Invalid credentials. Press 'esc' to return to the home page or press any other key to try again.");
@@ -88,7 +95,8 @@ void login_screen(sqlite3* db) {
 
             clear();
         }
-    }  
+    }
+
     home_screen();
     refresh();
 }
@@ -135,7 +143,54 @@ void registration_screen(sqlite3* db) {
 }
 
 void reproduce_screen() {
-    mvprintw(2, 5, "Please select an audio file to reproduce."); 
+    //user folder path
+    char *user_folder_path = malloc(strlen(AUDIOS_FOLDER_PATH) + strlen(current_user) + 2);
+    if (user_folder_path == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
+    strcpy(user_folder_path, AUDIOS_FOLDER_PATH);
+    strcat(user_folder_path, current_user);
+    strcat(user_folder_path, "/");
+
+    //ERROR HERE    
+    char **options = NULL;
+    int n_options = files_in_directory_list(user_folder_path, &options);
+    if (n_options == -1) {
+        mvprintw(2, 5, "Error reading audio files. Press any key to continue.");
+        refresh();
+        getch();
+        return;
+    }
+    
+    int selected = menu_select("Select an audio file to reproduce", options, n_options);
+    if (selected == -1) {
+        mvprintw(2, 5, "Error selecting audio file. Press any key to continue.");
+        refresh();
+        getch();
+        return;
+    }
+
+    // Reproduce the selected audio file
+    char *audio_path = malloc(strlen(AUDIOS_FOLDER_PATH) + strlen(options[selected]) + 1);
+    if (audio_path == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
+    strcpy(audio_path, AUDIOS_FOLDER_PATH);
+    strcat(audio_path, options[selected]);
+    if (reproduce_audio(audio_path)) {
+        mvprintw(2, 5, "Audio reproduction successful! Press any key to continue...");
+    } else {
+        mvprintw(2, 5, "Audio reproduction failed. Press any key to continue...");
+    }
+    free(audio_path);
+    for (int i = 0; i < n_options; i++) {
+        free(options[i]);
+    }
+    // Wait for user input before returning to the home screen
+    mvprintw(4, 5, "Press any key to return to the home screen...");
+
     refresh();
     getch();
 }
@@ -143,8 +198,11 @@ void reproduce_screen() {
 //function for displaying the home screen
 void home_screen() {
     clear();
-    mvprintw(7, 5, "Login successful! You are now inside the Ermes140 home interface.");
-    int selected = menu_select("Home Menu", home_menu, HOME_MENU_OPTIONS);
+
+    //create a string with sprintf
+    char welcome_message[STRING_CONSTRUCTOR];
+    sprintf(welcome_message, "Hi %s, you are now inside the Ermes140 home interface!", current_user);
+    int selected = menu_select(welcome_message, home_menu, HOME_MENU_OPTIONS);
     clear();
     switch (selected) {
         case 0:

@@ -1,7 +1,7 @@
 #include "reproduce.h"
 
 //function to play audio files
-bool reproduce_audio(sqlite3 *db, const char *audio_name) {
+bool reproduce_audio(char *audio_name) {
     SNDFILE *file;
     SF_INFO sfinfo;
     float buffer[FRAMES_PER_BUFFER * 2]; // stereo
@@ -34,4 +34,6 @@ bool reproduce_audio(sqlite3 *db, const char *audio_name) {
     Pa_StopStream(stream);
     Pa_CloseStream(stream);
     sf_close(file);
+
+    return true;
 }

@@ -6,7 +6,7 @@
 #include "../management/management.h"
 
 // Function to play audio
-bool reproduce_audio(sqlite3 *db, const char *audio_name);
+bool reproduce_audio(char *audio_name);
 
 #endif
 

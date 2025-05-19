@@ -103,3 +103,45 @@ int create_directory(const char *path) {
     }
     return 0; // Success
 }
+
+int files_in_directory_list(const char *path, char*** files_list) {
+    struct dirent *entry;
+    DIR *dp = opendir(path);
+    if (dp == NULL) {
+        fprintf(stderr, "Error opening directory: %s\n", path);
+        return -1; // Error
+    }
+
+    int count = 0;
+    *files_list = malloc(sizeof(char*) * MAX_FILES_PER_USER);
+    if (*files_list == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        closedir(dp);
+        return -1; // Error
+    }
+
+    while ((entry = readdir(dp)) != NULL) {
+        char fullpath[FILE_PATH_MAX];
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", path, entry->d_name);
+
+        struct stat st;
+        if (stat(fullpath, &st) == 0 && S_ISREG(st.st_mode)) {
+            if (count >= MAX_FILES_PER_USER) {
+                fprintf(stderr, "Maximum number of files exceeded\n");
+                break; // Limit reached
+            }
+            size_t len = strlen(entry->d_name) + 1;
+            (*files_list)[count] = malloc(len);
+            if ((*files_list)[count] == NULL) {
+                fprintf(stderr, "Memory allocation failed\n");
+                closedir(dp);
+                return -1;
+            }
+            strcpy((*files_list)[count], entry->d_name);
+            count++;
+        }
+    }
+
+    closedir(dp);
+    return count; // Success
+}

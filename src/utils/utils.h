@@ -10,5 +10,6 @@ int initialize_portaudio();
 int close_portaudio();
 
 int create_directory(const char *path);
+int files_in_directory_list(const char *path, char*** file_list);
 
 #endif

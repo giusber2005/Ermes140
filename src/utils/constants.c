@@ -1,8 +1,11 @@
 #include "constants.h"
 
+//VARIABLES FOR THE USERS MANAGEMENT
+char *current_user;
+
 //VARIABLES FOR THE DATABASE
 
-const char* DATABASE_PATH = "ErmesDatabase.db";
+char* DATABASE_PATH = "ErmesDatabase.db";
 
 ColumnDef user_columns[] = {
     {"id", "INTEGER PRIMARY KEY AUTOINCREMENT"},
@@ -19,18 +22,18 @@ ColumnDef audios[] = {
 
 //VARIABALES FOR THE GRAPHICAL INTERFACE
 
-const char* start_menu[] = {
-    "-> Login",
-    "-> Register",
-    "-> Close"
+char* start_menu[] = {
+    "Login",
+    "Register",
+    "Close"
 };
 
-const char* home_menu[] = {
-    "-> Record",
-    "-> Reproduce",
-    "-> Compress",
-    "-> Notes generator",
-    "-> Delete",
-    "-> Manage account",
-    "-> Exit"
+char* home_menu[] = {
+    "Record",
+    "Reproduce",
+    "Compress",
+    "Notes generator",
+    "Delete",
+    "Manage account",
+    "Exit"
 };

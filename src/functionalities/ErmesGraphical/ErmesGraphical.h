@@ -6,6 +6,7 @@
 #include "../../utils/mainLibraries.h"
 #include "../../utils/constants.h"
 #include "../management/management.h"
+#include "../reproduce/reproduce.h"
 
 //functions to be used in other files
 void show_interface(sqlite3* db);
@@ -17,6 +18,6 @@ void home_screen();
 void login_screen(sqlite3* db);
 void registration_screen(sqlite3* db);
 void reproduce_screen();
-int menu_select(const char* title, const char* options[], int n_options);
+int menu_select(const char* title, char* options[], int n_options);
 
 #endif
