@@ -1,0 +1,76 @@
+PROJECT DESCRIPTION
+    Ermes140 is a cli program written in c related with audios.
+    With this program you'll be able to record, compress, export audio, to remove noise from them, to reproduce them from the cli and to identify notes from them.
+    You will be also able to create multiple profiles, to manage your library of audios and notes files, and to see the audio you record and reproduce in a nice graphical cli program.
+ROADMAP
+    Initialization
+        Initialize debugging
+        Create files, folder structure of the project.
+        Identify all the libraries that will be needed and link them.
+        Create test audio files
+        Create database with sql lite and create his structure
+        Git version control and github repository
+        Create Makefile and link all the files together.
+    Working
+    Refining the project
+    Testing the application of various type local machines (mac, linux, windows)
+        Logo
+        packaging 
+LIBRARIES 
+    sqlite3 official c api #for databases
+    libsndfile #for audios
+    ncurses #for cli graphics
+
+PROJECT STRUCTURE 
+    Makefile
+    ErmesDatabase.db
+    README.md
+    LICENSE.txt 
+    git.ignore
+    ./src
+        main.c 
+        ./utils
+            mainLibraries.h
+            constants.h
+            utils.c
+            utils.h 
+        ./functionalities
+            ./record
+                record.c
+                record.h
+            ./reproduce
+                reproduce.c
+                reproduce.h
+            ./identify
+                identify.c
+                identify.h 
+            ./compress
+                compress.c
+                compress.h
+            ./export
+                export.c
+                export.h
+            ./ErmesGraphical
+                graphics140.c
+                graphics140.h
+            ./management
+                management.c
+                management.h
+            ./database
+                database.c
+                database.h   
+    ./build
+
+THINGS TO DO 
+    Add logo to the graphic and display ermes140 with figlet
+    Create artistic borders outside the graphics
+    Add also colors (purple, green theme) and update graphics 
+    Dynamic password strenght checking
+    Start Reproduction and Recording of audios
+        -add files limit when inserting new files
+        -adjust files in numerical order
+
+BUGS 
+    why i need to type the 'esc' character two times to exit from the login area
+TEMPORARY NOTES
+    export AUDIODEV = null

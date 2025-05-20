@@ -1,0 +1,32 @@
+# === Build artifacts ===
+/build/
+/*.out
+*.o
+*.a
+*.so
+*.exe
+
+# === SQLite database ===
+/ErmesDatabase.db
+
+# === Editor files ===
+*.log
+*.swp
+*~
+*.tmp
+
+# === VSCode ===
+.vscode/
+
+# === MacOS system files ===
+.DS_Store
+
+# === Backup files ===
+*.bak
+*.old
+
+# === GDB debugging files ===
+.gdb_history
+
+# === Core dumps ===
+core
